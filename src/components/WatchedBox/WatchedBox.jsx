@@ -6,7 +6,7 @@ import WatchedList from "../WatchedList/WatchedList";
 const WatchedBox = () => {
   const [isOpen2, setIsOpen2] = useState(true);
   return (
-    <div>
+    <div className="box">
       <Button onClick={() => setIsOpen2((open) => !open)}>
         {isOpen2 ? "–" : "+"}
       </Button>
