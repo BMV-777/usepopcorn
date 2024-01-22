@@ -134,6 +134,9 @@ body {
   cursor: pointer;
   z-index: 999;
 }
+/* .btn-delete {
+  position: relative;
+} */
 
 .list {
   list-style: none;

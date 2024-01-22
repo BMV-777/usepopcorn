@@ -4,13 +4,13 @@ import tempMovieData from "../../tempMovieData";
 
 import Movie from "../Movie/Movie";
 
-const MoveList = () => {
-  const [movies, setMovies] = useState(tempMovieData);
+const MoveList = ({ movies, onDelete }) => {
+  // const [movies, setMovies] = useState(tempMovieData);
 
   return (
     <ul className="list">
       {movies?.map((movie) => (
-        <Movie movie={movie} key={movie.imdbID} />
+        <Movie movie={movie} onDelete={onDelete} key={movie.imdbID} />
       ))}
     </ul>
   );

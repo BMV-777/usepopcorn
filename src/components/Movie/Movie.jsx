@@ -1,4 +1,4 @@
-const Movie = ({ movie }) => {
+const Movie = ({ movie, onDelete }) => {
   return (
     <li>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
@@ -9,6 +9,9 @@ const Movie = ({ movie }) => {
           <span>{movie.Year}</span>
         </p>
       </div>
+      <button className="btn-delete" onClick={() => onDelete(movie.imdbID)}>
+        X
+      </button>
     </li>
   );
 };
