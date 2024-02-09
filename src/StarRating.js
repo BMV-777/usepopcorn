@@ -112,4 +112,4 @@ function Star({ Rating, full, onHoverIn, onHoverOut, size, color }) {
     </span>
   );
 }
-// 10/118
+// 10/121
