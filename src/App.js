@@ -11,13 +11,15 @@ import Box from "./components/Box/Box";
 import MoveList from "./components/MoveList/MoveList";
 import WatchedSummary from "./components/WatchedSummary/WatchedSummary";
 import WatchedMoveList from "./components/WatchedMoveList/WatchedMoveList";
+import ErrorMessages from "./components/ErrorMessages/ErrorMessages";
 import Loader from "./components/Loader/Loader";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const query = "porno";
+  const [error, setError] = useState("");
+  const query = "sport";
 
   const KEY = "e94e1bf8";
 
@@ -28,13 +30,26 @@ export default function App() {
 
   useEffect(function () {
     async function fetchMovies() {
-      setIsLoading(true);
-      const res = await fetch(
-        `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
-      );
-      const data = await res.json();
-      setMovies(data.Search);
-      setIsLoading(false);
+      try {
+        setIsLoading(true);
+        const res = await fetch(
+          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+        );
+
+        if (!res.ok)
+          throw new Error("Something went wrong with fetching movies");
+
+        const data = await res.json();
+        if (data.Response === "False") throw new Error("Movie not found");
+        setMovies(data.Search);
+        console.log(data.Search);
+        console.log(data);
+      } catch (error) {
+        setError(error.message);
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
     }
     fetchMovies();
   }, []);
@@ -47,11 +62,16 @@ export default function App() {
       </NavBar>
       <Main>
         <Box>
-          {isLoading ? (
+          {isLoading && <Loader />}
+          {!isLoading && !error && (
+            <MoveList movies={movies} onDelete={handelDeleteMovies} />
+          )}
+          {error && <ErrorMessages message={error} />}
+          {/* {isLoading ? (
             <Loader />
           ) : (
             <MoveList movies={movies} onDelete={handelDeleteMovies} />
-          )}
+          )} */}
         </Box>
         <Box>
           <WatchedSummary watched={watched} />
@@ -61,4 +81,4 @@ export default function App() {
     </>
   );
 }
-// 10/113
+// 11/147
