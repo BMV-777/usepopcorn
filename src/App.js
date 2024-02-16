@@ -112,14 +112,71 @@ export default function App() {
     </>
   );
 }
-// 11/149
+// 11/151
 function MoveDetails({ selectId, onClosedMovie }) {
+  const KEY = "e94e1bf8";
+
+  const [movie, setMovies] = useState({});
+
+  const {
+    Title: title,
+    Year: year,
+    Poster: poster,
+    Runtime: runtime,
+    imdbRating,
+    Plot: plot,
+    Released: released,
+    Actors: actors,
+    Director: director,
+    Genre: genre,
+  } = movie;
+
+  console.log(title, year);
+
+  useEffect(function () {
+    async function getMovieDetails() {
+      const res = await fetch(
+        `http://www.omdbapi.com/?apikey=${KEY}&i=${selectId}`
+      );
+
+      const data = await res.json();
+
+      console.log(data);
+      setMovies(data);
+    }
+    getMovieDetails();
+  }, []);
+
   return (
-    <p className="details">
-      <button className="btn-back" onClick={onClosedMovie}>
-        &larr;
-      </button>
+    <div className="details">
+      <header>
+        <button className="btn-back" onClick={onClosedMovie}>
+          &larr;
+        </button>
+        <img src={poster} alt={`Poster of ${movie} movie`} />
+
+        <div className="details-overview">
+          <h2>{title}</h2>
+          <p>
+            {released} &bull; {runtime}
+          </p>
+          <p>{genre}</p>
+          <p>
+            <span>⭐</span>
+            {imdbRating} IMBb rating
+          </p>
+        </div>
+      </header>
+      <section>
+        <div>
+          <p>
+            <em>{plot}</em>
+          </p>
+          <p>Starring {actors}</p>
+          <p>Directed by {director}</p>
+        </div>
+      </section>
       {selectId}
-    </p>
+    </div>
   );
 }
