@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 // import StarRating from "./StarRating";
 import "./style1.css";
@@ -6,16 +6,6 @@ import "./style1.css";
 // import ProbStar from "./ProbStar";
 import "./index.css";
 import App from "./App";
-// import reportWebVitals from './reportWebVitals';
-// function Test() {
-//   const [movieRating, setMovieRating] = useState(0);
-//   return (
-//     <div>
-//       <StarRating color="blue" maxRating={10} onRatings={setMovieRating} />
-//       <p>This movie was rated {movieRating} status</p>
-//     </div>
-//   );
-// }
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

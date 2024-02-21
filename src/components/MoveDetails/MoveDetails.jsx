@@ -3,12 +3,18 @@ import { React, useEffect, useState } from "react";
 import Loader from "../Loader/Loader";
 import StarRating from "../../StarRating";
 
-const MoveDetails = ({ selectId, onCloseMovie, onAddWatched }) => {
+const MoveDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
   const KEY = "e94e1bf8";
 
   const [movie, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [userRating, setUserRating] = useState([]);
+  const [userRating, setUserRating] = useState("");
+
+  const isWatched = watched.map((watch) => watch.imdbID).includes(selectId);
+  const watchedUserRating = watched.find(
+    (movie) => movie.imdbID === selectId
+  )?.userRating;
+  // console.log(isWatched);
 
   const {
     Title: title,
@@ -40,6 +46,19 @@ const MoveDetails = ({ selectId, onCloseMovie, onAddWatched }) => {
 
   useEffect(
     function () {
+      if (!title) return;
+      document.title = `Movie | ${title}`;
+
+      return function () {
+        document.title = "usePopcorn";
+      };
+    },
+
+    [title]
+  );
+
+  useEffect(
+    function () {
       async function getMovieDetails() {
         try {
           setIsLoading(true);
@@ -50,7 +69,7 @@ const MoveDetails = ({ selectId, onCloseMovie, onAddWatched }) => {
 
           const data = await res.json();
 
-          console.log(data);
+          // console.log(data);
           setMovies(data);
         } catch (error) {
           // setError(error.message);
@@ -90,18 +109,24 @@ const MoveDetails = ({ selectId, onCloseMovie, onAddWatched }) => {
           </header>
           <section>
             <div className="rating">
-              <StarRating
-                maxRating={10}
-                size={24}
-                color="red"
-                onRatings={setUserRating}
-              />
-              {userRating > 0 ? (
-                `${!imdbRating.imdbID}`
+              {!isWatched ? (
+                <>
+                  <StarRating
+                    maxRating={10}
+                    size={24}
+                    color="red"
+                    onRatings={setUserRating}
+                  />
+                  {userRating > 0 && (
+                    <button className="btn-add" onClick={handelAdd}>
+                      + Add Movie
+                    </button>
+                  )}
+                </>
               ) : (
-                <button className="btn-add" onClick={handelAdd}>
-                  + Add Movie
-                </button>
+                <p>
+                  You rated with movie {watchedUserRating} <span>⭐</span>
+                </p>
               )}
             </div>
             <p>
