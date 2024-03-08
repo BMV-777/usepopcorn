@@ -17,7 +17,7 @@ import ErrorMessages from "./components/ErrorMessages/ErrorMessages";
 import Loader from "./components/Loader/Loader";
 
 export default function App() {
-  const [query, setQuery] = useState("sport");
+  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +41,11 @@ export default function App() {
   }
 
   function handelAddWatched(movie) {
-    setWatched((selectId) => [...selectId, movie]);
+    setWatched((watched) => [...watched, movie]);
+
+    localStorage.setItem("watched", JSON.stringify([...watched, movie]));
+
+    // JSON.parse(localStorage.getItem("watched"));
   }
 
   useEffect(
@@ -64,12 +68,11 @@ export default function App() {
           if (data.Response === "False") throw new Error("Movie not found");
           setMovies(data.Search);
           setError("");
-          // console.log(data.Search);
         } catch (err) {
           if (err.name !== "AbortError") {
+            console.log(err.message);
             setError(err.message);
           }
-          // console.error(error);
         } finally {
           setIsLoading(false);
         }
@@ -80,7 +83,7 @@ export default function App() {
         setError("");
         return;
       }
-
+      handelCloseMovie();
       fetchMovies();
 
       return function () {
@@ -100,11 +103,7 @@ export default function App() {
         <Box>
           {isLoading && <Loader />}
           {!isLoading && !error && (
-            <MoveList
-              movies={movies}
-              // onDelete={handelDeleteMovies}
-              onSelectMovie={handelSelectMovie}
-            />
+            <MoveList movies={movies} onSelectMovie={handelSelectMovie} />
           )}
           {error && <ErrorMessages message={error} />}
         </Box>
@@ -130,4 +129,4 @@ export default function App() {
     </>
   );
 }
-// 11/151
+// 11/163/ глянуть рейтинг152

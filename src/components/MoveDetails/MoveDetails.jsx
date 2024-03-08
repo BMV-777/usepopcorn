@@ -41,7 +41,7 @@ const MoveDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
     };
 
     onAddWatched(newWatchedMovie);
-    onCloseMovie();
+    // onCloseMovie();
   }
 
   useEffect(
@@ -51,6 +51,7 @@ const MoveDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
 
       return function () {
         document.title = "usePopcorn";
+        // console.log(`Movie is closed ${title}`);
       };
     },
 
@@ -81,6 +82,23 @@ const MoveDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
       getMovieDetails();
     },
     [selectId]
+  );
+
+  useEffect(
+    function () {
+      function callback(e) {
+        if (e.code === "Escape") {
+          onCloseMovie();
+          console.log("CLOSED!!!");
+        }
+      }
+      document.addEventListener("keydown", callback);
+
+      return function () {
+        document.removeEventListener("keydown", callback);
+      };
+    },
+    [onCloseMovie]
   );
 
   return (
