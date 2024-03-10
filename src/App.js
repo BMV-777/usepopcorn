@@ -19,10 +19,16 @@ import Loader from "./components/Loader/Loader";
 export default function App() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
+  // const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectId, setSelectId] = useState(null);
+
+  const [watched, setWatched] = useState(function () {
+    const storedValue = localStorage.getItem("watched");
+
+    return JSON.parse(storedValue);
+  });
   // const temp = "sport";
   // const tempQuery = "interstellar";
 
@@ -43,10 +49,17 @@ export default function App() {
   function handelAddWatched(movie) {
     setWatched((watched) => [...watched, movie]);
 
-    localStorage.setItem("watched", JSON.stringify([...watched, movie]));
+    // localStorage.setItem("watched", JSON.stringify([...watched, movie]));
 
     // JSON.parse(localStorage.getItem("watched"));
   }
+
+  useEffect(
+    function () {
+      localStorage.setItem("watched", JSON.stringify(watched));
+    },
+    [watched]
+  );
 
   useEffect(
     function () {
@@ -129,4 +142,4 @@ export default function App() {
     </>
   );
 }
-// 11/163/ глянуть рейтинг152
+// 11/16/ глянуть рейтинг152
