@@ -9,7 +9,6 @@ const Search = ({ query, setQuery }) => {
         if (document.activeElement === inputEl.current) return;
         if (e.code === "Enter") {
           inputEl.current.focus();
-
           setQuery("");
         }
       }

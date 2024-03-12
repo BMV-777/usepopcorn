@@ -2,6 +2,7 @@ import { React, useEffect, useState } from "react";
 
 import Loader from "../Loader/Loader";
 import StarRating from "../../StarRating";
+import { useKay } from "../../Hooks/useKay";
 
 const MoveDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
   const KEY = "e94e1bf8";
@@ -41,7 +42,7 @@ const MoveDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
     };
 
     onAddWatched(newWatchedMovie);
-    // onCloseMovie();
+    onCloseMovie();
   }
 
   useEffect(
@@ -84,22 +85,24 @@ const MoveDetails = ({ selectId, onCloseMovie, onAddWatched, watched }) => {
     [selectId]
   );
 
-  useEffect(
-    function () {
-      function callback(e) {
-        if (e.code === "Escape") {
-          onCloseMovie();
-          console.log("CLOSED!!!");
-        }
-      }
-      document.addEventListener("keydown", callback);
+  useKay("Escape", onCloseMovie);
 
-      return function () {
-        document.removeEventListener("keydown", callback);
-      };
-    },
-    [onCloseMovie]
-  );
+  // useEffect(
+  //   function () {
+  //     function callback(e) {
+  //       if (e.code === "Escape") {
+  //         onCloseMovie();
+  //         console.log("CLOSED!!!");
+  //       }
+  //     }
+  //     document.addEventListener("keydown", callback);
+
+  //     return function () {
+  //       document.removeEventListener("keydown", callback);
+  //     };
+  //   },
+  //   [onCloseMovie]
+  // );
 
   return (
     <div className="details">
